@@ -94,8 +94,8 @@ function ManagePrices() {
 																<p className="text-[14px] font-semibold text-title-strong w-[180px] border-[1px] border-red-200">
 																	{`${capitalize(subcategory.name)} `}
 																</p>
-																<div className="flex items-center gap-2">
-																	<p className="text-right border-[1px] border-red-200 w-[30px] text-[16px] font-semibold text-title-strong flex-nowrap">
+																<div className="flex items-center gap-1">
+																	<p className="text-right border-[1px] border-red-200 w-[40px] text-[16px] font-semibold text-title-strong flex-nowrap">
 																		{"$" + priceFound?.value}
 																	</p>
 																	<PriceDialogUpdate
