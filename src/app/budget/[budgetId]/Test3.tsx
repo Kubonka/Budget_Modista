@@ -106,9 +106,10 @@ function Test3({ body }: Props) {
 						<p style={{ ...pData, fontSize: "14px" }}>
 							LA MODISTA DE LOS PASTELES
 						</p>
-						<p style={pData}>ALEJANDRO KORN 1433</p>
+						<p style={pData}>ALEJANDRO KORN 1431</p>
 						<p style={pData}>MAR DEL PLATA</p>
-						<p style={pData}>223 4646844</p>
+						<p style={pData}>223 4228155</p>
+						<p style={pData}>lamodistadelospasteles@gmail.com</p>
 					</div>
 					<p
 						style={{
