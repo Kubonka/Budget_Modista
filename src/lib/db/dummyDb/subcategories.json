@@ -1,0 +1,10 @@
+[  
+  {"name":"Crema","categoryId":2},
+  {"name":"Ganashe","categoryId":2},
+  {"name":"Topper","categoryId":4},
+  {"name":"Azucar","categoryId":4},
+  {"name":"clasicas","categoryId":3},
+  {"name":"bañadas","categoryId":3},
+  {"name":"clasico","categoryId":5},
+  {"name":"con falopa","categoryId":5}
+]

@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Unit {
+  id       Int        @id @default(autoincrement())
+  singular String
+  plural   String
+  category Category[]
+
+  @@map("unit")
+}
+
+model Category {
+  id          Int           @id @default(autoincrement())
+  name        String
+  active      Boolean       @default(true)
+  unit        Unit          @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  unitId      Int
+  subcategory Subcategory[]
+
+  @@map("category")
+}
+
+model Subcategory {
+  id         Int      @id @default(autoincrement())
+  name       String
+  active     Boolean  @default(true)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int
+  price      Price?
+  Item       Item[]
+
+  @@map("subcategory")
+}
+
+model Price {
+  id            Int         @id @default(autoincrement())
+  value         Float
+  active        Boolean     @default(true)
+  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
+  subcategoryId Int         @unique
+
+  @@map("price")
+}
+
+model Item {
+  id            Int         @id @default(autoincrement())
+  count         Int
+  price         Float
+  description   String      @default("")
+  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
+  subcategoryId Int
+  budget        Budget      @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  budgetId      Int
+
+  @@map("item")
+}
+
+model Budget {
+  id       Int     @id @default(autoincrement())
+  to       String  @default("")
+  date     String
+  total    Float
+  accepted Boolean @default(false)
+  active   Boolean @default(true)
+  items    Item[]
+
+  @@map("budget")
+}
+
+// model BudgetItem {
+//   Item     Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+//   itemId   Int
+//   Budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+//   budgetId Int
+
+//   @@id([itemId, budgetId])
+//   @@map("budget_item")
+// }
