@@ -20,9 +20,9 @@ class DummyDb {
 	}
 	public async initBaseTables() {
 		await this.initUnits(units);
-		//await this.initCategories(categories);
-		//await this.initSubcategories(subcategories);
-		//await this.initBudgets();
+		await this.initCategories(categories);
+		await this.initSubcategories(subcategories);
+		await this.initBudgets();
 	}
 	private async initUnits(units: Partial<Unit>[]) {
 		for (let i = 0; i < units.length; i++) {

@@ -20,7 +20,7 @@ function AllBudgets() {
 	}
 	//$ markup
 	return (
-		<div className="h-full">
+		<div className="h-full w-full">
 			<DataTable
 				columns={columns}
 				data={budgetTableData}

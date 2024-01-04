@@ -45,7 +45,7 @@ function ImageGen({ onGenerationSuccess, getBody }: Props) {
 			<Button className="w-full" onClick={handleGeneratePdf}>
 				Generar Imagen
 			</Button>
-			<div className={`${flag ? "hidden" : ""} absolute top-[1900px]`}>
+			<div className={`${flag ? "hidden" : ""} absolute top-[1900px] m-4`}>
 				<div ref={pdfmarkupRef}></div>
 			</div>
 		</div>
