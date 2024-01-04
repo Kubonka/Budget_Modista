@@ -36,7 +36,7 @@ function ImageGen({ onGenerationSuccess, getBody }: Props) {
 				root.unmount();
 				setFlag(false);
 				onGenerationSuccess(true);
-			}, 1000);
+			}, 2500);
 		}, 200);
 	};
 
