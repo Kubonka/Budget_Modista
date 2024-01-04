@@ -11,17 +11,17 @@ import ItemRepo from "@/lib/repo/ItemRepo";
 
 class DummyDb {
 	public async reset() {
-		await prisma.unit.deleteMany({});
-		await prisma.category.deleteMany({});
-		await prisma.subcategory.deleteMany({});
+		// await prisma.unit.deleteMany({});
+		// await prisma.category.deleteMany({});
+		// await prisma.subcategory.deleteMany({});
 		// await prisma.budgetItem.deleteMany({});
 		// await prisma.item.deleteMany({});
 		// await prisma.budget.deleteMany({});
 	}
 	public async initBaseTables() {
 		await this.initUnits(units);
-		await this.initCategories(categories);
-		await this.initSubcategories(subcategories);
+		//await this.initCategories(categories);
+		//await this.initSubcategories(subcategories);
 		//await this.initBudgets();
 	}
 	private async initUnits(units: Partial<Unit>[]) {
