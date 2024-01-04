@@ -19,20 +19,18 @@ class CategoryRepo implements TCategoryRepo {
 		return CategoryRepo.instance;
 	}
 	public async create(body: Category): Promise<TStatusMessage> {
-		if (body.name.toLowerCase() !== "personalizada") {
-			const newCategory = await prisma.category.create({
-				data: { name: body.name, unitId: body.unitId },
+		const newCategory = await prisma.category.create({
+			data: { name: body.name.toLowerCase(), unitId: body.unitId },
+		});
+		if (newCategory) {
+			const subcategoryRepo = SubcategoryRepo.getInstance();
+			await subcategoryRepo.create({
+				id: 0,
+				name: "default",
+				categoryId: newCategory.id,
+				active: true,
 			});
-			if (newCategory) {
-				const subcategoryRepo = SubcategoryRepo.getInstance();
-				await subcategoryRepo.create({
-					id: 0,
-					name: "default",
-					categoryId: newCategory.id,
-					active: true,
-				});
-				return { status: "SUCCESS", message: "Category created" };
-			}
+			return { status: "SUCCESS", message: "Category created" };
 		}
 		return { status: "ERROR", message: "Category already exist" };
 	}

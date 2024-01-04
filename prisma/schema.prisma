@@ -22,7 +22,7 @@ model Unit {
 
 model Category {
   id          Int           @id @default(autoincrement())
-  name        String
+  name        String        @unique
   active      Boolean       @default(true)
   unit        Unit          @relation(fields: [unitId], references: [id], onDelete: Cascade)
   unitId      Int
