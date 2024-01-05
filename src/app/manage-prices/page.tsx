@@ -91,12 +91,12 @@ function ManagePrices() {
 													return (
 														<TableRow key={subcategory.id}>
 															<TableCell className="flex flex-row items-center justify-between p-2 font-medium">
-																<p className="text-[14px] font-semibold text-title-strong">
+																<p className="text-[14px] font-semibold text-title-strong w-[180px] ">
 																	{`${capitalize(subcategory.name)} `}
 																</p>
-																<div className="flex items-center gap-4">
-																	<p className="text-right  text-[16px] font-semibold text-title-strong">
-																		{"$ " + priceFound?.value}
+																<div className="flex items-center gap-1">
+																	<p className="text-right  w-[50px] text-[16px] font-semibold text-title-strong flex-nowrap">
+																		{"$" + priceFound?.value}
 																	</p>
 																	<PriceDialogUpdate
 																		data={priceFound as Price}

@@ -1,7 +1,7 @@
 [
-  {"name":"Personalizada","unitId":1},
-  {"name":"Torta","unitId":1},
-  {"name":"MiniDona","unitId":2},
-  {"name":"Adorno","unitId":3},
-  {"name":"PopCake","unitId":2}
+  {"name":"personalizada","unitId":1},
+  {"name":"torta","unitId":1},
+  {"name":"miniDona","unitId":2},
+  {"name":"adorno","unitId":3},
+  {"name":"popCake","unitId":2}
 ]

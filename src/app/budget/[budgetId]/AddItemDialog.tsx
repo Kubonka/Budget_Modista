@@ -64,8 +64,10 @@ function AddItemDialog({ acceptedStatus, onSubmit, dbTables }: Props) {
 	}, [item.count, extraValue]);
 
 	function calculatePrice(): number {
+		const categoryId = dbTables.categories.find((c) => c.name === item.category)
+			?.id as number;
 		const subcategoryId = dbTables.allSubcategories.find(
-			(s) => s.name === item.subcategory
+			(s) => s.name === item.subcategory && s.categoryId === categoryId
 		)?.id as number;
 		const foundPrice = dbTables.prices.find(
 			(price) => price.subcategoryId === subcategoryId
@@ -75,7 +77,7 @@ function AddItemDialog({ acceptedStatus, onSubmit, dbTables }: Props) {
 	}
 	//todo checkear esta funcion
 	function validateForm() {
-		if (item.category === "Personalizada") {
+		if (item.category === "personalizada") {
 			if (item.description === "") {
 				setError(true);
 				return false;
@@ -136,9 +138,9 @@ function AddItemDialog({ acceptedStatus, onSubmit, dbTables }: Props) {
 					</Label>
 					<Select
 						onValueChange={(value) => {
-							if (value === "Personalizada") {
+							if (value === "personalizada") {
 								{
-									setItem((p) => ({ ...p, subcategory: "Personalizada" }));
+									setItem((p) => ({ ...p, subcategory: "personalizada" }));
 									// setAddItemData((p) => ({
 									//   ...p,
 									//   subcategory_id: allSubcategories.find((s) => {
@@ -171,7 +173,7 @@ function AddItemDialog({ acceptedStatus, onSubmit, dbTables }: Props) {
 							</SelectGroup>
 						</SelectContent>
 					</Select>
-					{item.category !== "Personalizada" ? (
+					{item.category !== "personalizada" ? (
 						<>
 							{/* //$ subcategory */}
 							<Label htmlFor="subcategory" className="text-left">

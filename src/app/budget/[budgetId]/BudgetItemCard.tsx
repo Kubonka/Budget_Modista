@@ -26,7 +26,7 @@ function BudgetItemCard({
 								: capitalize(description)}
 						</p>
 						<p>
-							{subcategory === "default" || subcategory === "Personalizada"
+							{subcategory === "default" || subcategory === "personalizada"
 								? ""
 								: subcategory}
 						</p>

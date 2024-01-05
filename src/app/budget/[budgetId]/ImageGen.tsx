@@ -9,44 +9,46 @@ import { v4 as uuidv4 } from "uuid";
 type Props = {
 	getBody: () => TBudgetData;
 	onGenerationSuccess: (status: boolean) => void;
+	idle: boolean;
 };
-function ImageGen({ onGenerationSuccess, getBody }: Props) {
-	const pdfmarkupRef = useRef<any>();
+function ImageGen({ onGenerationSuccess, getBody, idle }: Props) {
+	const markupRef = useRef<any>();
 	const [flag, setFlag] = useState(false);
-	const handleGeneratePdf = async () => {
-		let root: any = createRoot(pdfmarkupRef.current);
+	const handleGenerateImage = async () => {
+		let root: any = createRoot(markupRef.current);
 		const body: TBudgetData = getBody();
 		console.log(body);
-		root.render(<Test3 key={uuidv4()} body={body} />);
+		await root.render(<Test3 key={uuidv4()} body={body} />);
 		setTimeout(() => {
 			console.log(body);
-			toPng(pdfmarkupRef.current, { cacheBust: false })
+			toPng(markupRef.current, { cacheBust: false })
 				.then((dataUrl: any) => {
 					const link = document.createElement("a");
-					link.download = `"Presupuesto"_${body.date}.png`;
+					link.download = `Presupuesto_${body.date}.png`;
 					link.href = dataUrl;
 					link.click();
 					setFlag(true);
+					setTimeout(() => {
+						root.unmount();
+						setFlag(false);
+						onGenerationSuccess(true);
+					}, 2500);
 				})
 				.catch((err) => {
 					console.log(err);
 					onGenerationSuccess(false);
+					root.unmount();
 				});
-			setTimeout(() => {
-				root.unmount();
-				setFlag(false);
-				onGenerationSuccess(true);
-			}, 2500);
-		}, 200);
+		}, 1000);
 	};
 
 	return (
 		<div>
-			<Button className="w-full" onClick={handleGeneratePdf}>
+			<Button className="w-full" onClick={() => idle && handleGenerateImage()}>
 				Generar Imagen
 			</Button>
-			<div className={`${flag ? "hidden" : ""} absolute top-[1900px] m-4`}>
-				<div ref={pdfmarkupRef}></div>
+			<div className={`${flag ? "hidden" : ""} absolute top-[1900px]`}>
+				<div ref={markupRef}></div>
 			</div>
 		</div>
 	);
