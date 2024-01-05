@@ -64,8 +64,10 @@ function AddItemDialog({ acceptedStatus, onSubmit, dbTables }: Props) {
 	}, [item.count, extraValue]);
 
 	function calculatePrice(): number {
+		const categoryId = dbTables.categories.find((c) => c.name === item.category)
+			?.id as number;
 		const subcategoryId = dbTables.allSubcategories.find(
-			(s) => s.name === item.subcategory
+			(s) => s.name === item.subcategory && s.categoryId === categoryId
 		)?.id as number;
 		const foundPrice = dbTables.prices.find(
 			(price) => price.subcategoryId === subcategoryId
