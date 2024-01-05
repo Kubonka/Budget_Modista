@@ -84,7 +84,7 @@ function Test3({ body }: Props) {
 			style={{
 				width: "500px",
 				padding: "4px",
-				backgroundColor: "rgb(249 250 251)",
+				backgroundColor: "white",
 			}}
 		>
 			<div
