@@ -1,5 +1,6 @@
 [
   {"singular":"porción","plural":"porciones"},
   {"singular":"caja","plural":"cajas"},
-  {"singular":"unidad","plural":"unidades"}
+  {"singular":"unidad","plural":"unidades"},
+  {"singular":"docena","plural":"docenas"}
 ]

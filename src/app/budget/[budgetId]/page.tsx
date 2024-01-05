@@ -26,6 +26,7 @@ type Props = {
 function Budget({ params }: Props) {
 	const { budgetId } = params;
 	const router = useRouter();
+	const [idle, setIdle] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [categories, setCategories] = useState<Category[]>([] as Category[]);
 	const [units, setUnits] = useState<Unit[]>([] as Unit[]);
@@ -142,9 +143,9 @@ function Budget({ params }: Props) {
 			items: p.items ? [...p.items, item] : [item],
 		}));
 	}
-
 	async function handleSaveBudget() {
 		try {
+			setIdle(false);
 			let result: TStatusMessage;
 			const { items, ...partialBudget } = currentBudget;
 			const budget = {
@@ -184,8 +185,11 @@ function Budget({ params }: Props) {
 						duration: 3000,
 					});
 				}
-
-				router.push(`/budget/${result.message}`);
+				if (budgetId === "0") {
+					router.push(`/budget/${result.message}`);
+				} else {
+					setIdle(true);
+				}
 			}
 		} catch (error) {
 			console.log(error);
@@ -251,6 +255,7 @@ function Budget({ params }: Props) {
 				<ImageGen
 					onGenerationSuccess={handleGenerationSuccess}
 					getBody={setUpTargetBody}
+					idle={idle}
 				/>
 			</CardFooter>
 		</Card>

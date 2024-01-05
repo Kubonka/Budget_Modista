@@ -60,7 +60,7 @@ class DummyDb {
 		}
 	}
 	public async initBudgets() {
-		const maxBudgets = 16; //$ SET
+		const maxBudgets = 35; //$ SET
 		for (let i = 1; i < maxBudgets; i++) {
 			const firstName = faker.person.firstName();
 			const lastName = faker.person.lastName();
@@ -109,7 +109,7 @@ class DummyDb {
 	}
 	private generateRandomDate() {
 		const startDate = new Date("2022-01-01").getTime();
-		const endDate = new Date("2023-12-31").getTime();
+		const endDate = new Date("2024-01-04").getTime();
 		const dates = [];
 		const randomTime = Math.random() * (endDate - startDate) + startDate;
 		const date = new Date(randomTime);
