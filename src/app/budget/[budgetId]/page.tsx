@@ -196,8 +196,10 @@ function Budget({ params }: Props) {
 		}
 	}
 	function handleStatusChange() {
-		setAcceptedStatus(true);
-		setCurrentBudget((p) => ({ ...p, accepted: true }));
+		setAcceptedStatus((q) => {
+			setCurrentBudget((p) => ({ ...p, accepted: true }));
+			return true;
+		});
 	}
 	//$ markup
 	if (loading) return <BudgetSkeleton />;
@@ -223,7 +225,7 @@ function Budget({ params }: Props) {
 							<BudgetItemCard
 								data={item}
 								onDeleteItem={handleDeleteItem}
-								acceptedStatus={acceptedStatus}
+								acceptedStatus={currentBudget?.accepted}
 							/>
 						</li>
 					))}
@@ -241,13 +243,15 @@ function Budget({ params }: Props) {
 						units,
 					}}
 					onSubmit={handleSubmitItem}
-					acceptedStatus={acceptedStatus}
+					acceptedStatus={currentBudget?.accepted}
 				/>
 			</CardContent>
 			<CardFooter className="flex flex-row justify-end gap-2">
 				<Button
 					disabled={acceptedStatus}
-					className={`w-full ${acceptedStatus && " bg-primary-disabled"}`}
+					className={`w-full ${
+						currentBudget?.accepted && " bg-primary-disabled"
+					}`}
 					onClick={handleSaveBudget}
 				>
 					Guardar
