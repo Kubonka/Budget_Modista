@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PricesSkeleton from "@/components/skeletons/PricesSkeleton";
+import TopMenu from "@/components/topMenu/TopMenu";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -13,10 +14,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<>
-			<div className=" bg-gray-100 h-screen">
-				<Suspense fallback={<PricesSkeleton />}>{children}</Suspense>
-			</div>
-		</>
+		<div className=" bg-gray-100 h-screen">
+			<TopMenu className="" />
+			<Suspense fallback={<PricesSkeleton />}>{children}</Suspense>
+		</div>
 	);
 }

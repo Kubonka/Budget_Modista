@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  url       = env("POSTGRES_PRISMA_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-//url      = env("DATABASE_URL")
 //
+//directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+//url       = env("POSTGRES_PRISMA_URL")
 
 model Unit {
   id       Int        @id @default(autoincrement())
@@ -30,6 +30,8 @@ model Category {
   unit        Unit          @relation(fields: [unitId], references: [id], onDelete: Cascade)
   unitId      Int
   subcategory Subcategory[]
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
 
   @@map("category")
 }
@@ -42,6 +44,8 @@ model Subcategory {
   categoryId Int
   price      Price?
   Item       Item[]
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
 
   @@map("subcategory")
 }
@@ -52,6 +56,8 @@ model Price {
   active        Boolean     @default(true)
   subcategory   Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
   subcategoryId Int         @unique
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
 
   @@map("price")
 }
@@ -77,16 +83,20 @@ model Budget {
   accepted Boolean @default(false)
   active   Boolean @default(true)
   items    Item[]
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
 
   @@map("budget")
 }
 
-// model BudgetItem {
-//   Item     Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
-//   itemId   Int
-//   Budget   Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-//   budgetId Int
-
-//   @@id([itemId, budgetId])
-//   @@map("budget_item")
-// }
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String?       @unique
+  emailVerified DateTime?
+  image         String?
+  category      Category[]
+  subcategory   Subcategory[]
+  price         Price[]
+  budget        Budget[]
+}
