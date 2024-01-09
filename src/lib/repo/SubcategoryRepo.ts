@@ -6,7 +6,7 @@ type TOptions = { active: boolean };
 type TSubcategoryRepo = {
 	create(body: Subcategory): Promise<TStatusMessage>;
 	update(body: Subcategory): Promise<TStatusMessage>;
-	getAll(options: TOptions): Promise<Subcategory[]>;
+	getAll(options: TOptions, userId: string): Promise<Subcategory[]>;
 	getByCategory(category: Category, options: TOptions): Promise<Subcategory[]>;
 	delete(body: Subcategory): Promise<TStatusMessage>;
 };
@@ -23,18 +23,28 @@ class SubcategoryRepo implements TSubcategoryRepo {
 			data: {
 				name: body.name as string,
 				categoryId: body.categoryId as number,
+				userId: body.userId,
 			},
 		});
 		if (newSubcategory) {
 			const priceRepo = PriceRepo.getInstance();
-			await priceRepo.create({ value: 0, subcategoryId: newSubcategory.id });
+			await priceRepo.create({
+				value: 0,
+				subcategoryId: newSubcategory.id,
+				userId: body.userId,
+			});
 			return { status: "SUCCESS", message: "Subcategory created" };
 		}
 		return { status: "ERROR", message: "Subcategory failed to create" };
 	}
-	public async getAll({ active }: TOptions): Promise<Subcategory[]> {
+	public async getAll(
+		{ active }: TOptions,
+		userId: string
+	): Promise<Subcategory[]> {
 		if (active)
-			return await prisma.subcategory.findMany({ where: { active: true } });
+			return await prisma.subcategory.findMany({
+				where: { active: true, userId },
+			});
 		return await prisma.subcategory.findMany();
 	}
 	public async getByCategory(
@@ -77,6 +87,7 @@ class SubcategoryRepo implements TSubcategoryRepo {
 					name: "default",
 					categoryId: body.categoryId,
 					active: true,
+					userId: body.userId,
 				});
 			}
 			return { status: "SUCCESS", message: "Subcategory deleted" };

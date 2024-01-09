@@ -5,9 +5,8 @@ type TBudgetRepo = {
 	create(body: PBudget): Promise<TStatusMessage>;
 	update(body: PBudget): Promise<TStatusMessage>;
 	getById(budgetId: number): Promise<Budget | null>;
-	get(): Promise<PBudget[] | null>;
+	getAll(userId: string): Promise<PBudget[] | null>;
 	delete(budgetId: number): Promise<TStatusMessage>;
-	//init(budgets: TBudget[]): Promise<void>;
 };
 class BudgetRepo implements TBudgetRepo {
 	private static instance: BudgetRepo | null = null;
@@ -20,10 +19,10 @@ class BudgetRepo implements TBudgetRepo {
 		}
 		return BudgetRepo.instance;
 	}
-	public async get(): Promise<PBudget[] | null> {
+	public async getAll(userId: string): Promise<PBudget[] | null> {
 		try {
 			return await prisma.budget.findMany({
-				where: { active: true },
+				where: { active: true, userId },
 				orderBy: { id: "desc" },
 			});
 		} catch (error) {
@@ -49,6 +48,7 @@ class BudgetRepo implements TBudgetRepo {
 				to: body.to as string,
 				total: body.total as number,
 				accepted: body.accepted as boolean,
+				userId: body.userId,
 			},
 		});
 		return { status: "SUCCESS", message: `${newBudget.id}` };

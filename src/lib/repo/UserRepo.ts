@@ -31,5 +31,15 @@ class UserRepo implements TUserRepo {
 			return { status: "ERROR", message: "Fetch user failed" };
 		}
 	}
+	public async getByEmail(email: string): Promise<string> {
+		try {
+			const foundUser = await prisma.user.findUnique({
+				where: { email: email },
+			});
+			return foundUser?.id || "";
+		} catch (error) {
+			return "";
+		}
+	}
 }
 export default UserRepo;

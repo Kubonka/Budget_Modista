@@ -30,15 +30,21 @@ import {
 } from "@/actions/categories";
 import { capitalize } from "@/lib/utils";
 import CategoryDialogDelete from "./CategoryDialogDelete";
+import { useSession } from "next-auth/react";
 
 export default function ManageCategories() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState<Category | null>(
 		null
 	);
+	const { data } = useSession();
+	console.log("session", data);
 	//$ func
 	async function loadAllCategories() {
-		const res = await getAllCategories({ active: true });
+		const res = await getAllCategories(
+			{ active: true },
+			data?.user.userId as string
+		);
 		setCategories(res);
 	}
 	useEffect(() => {
@@ -119,7 +125,13 @@ export default function ManageCategories() {
 										<p className="pt-2 font-bold">CATEGORIA</p>
 										<CategoryDialogCreate
 											create={true}
-											data={{ name: "", id: 0, unitId: 0, active: true }}
+											data={{
+												name: "",
+												id: 0,
+												unitId: 0,
+												active: true,
+												userId: data?.user.userId as string,
+											}}
 											onSubmit={handleSubmit}
 										/>
 									</div>
@@ -143,6 +155,7 @@ export default function ManageCategories() {
 															id: category.id,
 															unitId: 0,
 															active: true,
+															userId: data?.user.userId as string,
 														}}
 														onSubmit={handleSubmit}
 													/>

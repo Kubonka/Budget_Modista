@@ -9,18 +9,21 @@ type Category = {
 	name: string;
 	active: boolean;
 	unitId: number;
+	userId: string;
 };
 type Subcategory = {
 	id: number;
 	name: string;
 	active: boolean;
 	categoryId: number;
+	userId: string;
 };
 type Price = {
 	id: number;
 	value: number;
 	active: boolean;
 	subcategoryId: number;
+	userId: string;
 };
 type PBudget = {
 	id: number;
@@ -29,6 +32,7 @@ type PBudget = {
 	total: number;
 	accepted: boolean;
 	active: boolean;
+	userId: string;
 };
 type Budget = {
 	id: number;
@@ -38,6 +42,7 @@ type Budget = {
 	accepted: boolean;
 	active: boolean;
 	items: Item[];
+	userId: string;
 };
 type Item = {
 	id: number;

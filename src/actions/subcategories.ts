@@ -1,7 +1,10 @@
 "use server";
 import SubcategoryRepo from "@/lib/repo/SubcategoryRepo";
-export async function getAllSubcategories(options: { active: boolean }) {
-	return await SubcategoryRepo.getInstance().getAll(options);
+export async function getAllSubcategories(
+	options: { active: boolean },
+	userId: string
+) {
+	return await SubcategoryRepo.getInstance().getAll(options, userId);
 }
 export async function getSubcategoriesByCategory(
 	category: Category,

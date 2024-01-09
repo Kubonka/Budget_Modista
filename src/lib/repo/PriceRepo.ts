@@ -1,11 +1,10 @@
 import prisma from "../db/db";
-import type { Price } from "@prisma/client";
 
 type TPriceRepo = {
 	create(body: Partial<Price>): Promise<void>;
 	update(body: Price): Promise<TStatusMessage>;
 	delete(body: Price): Promise<TStatusMessage>;
-	getAll(): Promise<Price[]>;
+	getAll(userId: string): Promise<Price[]>;
 };
 class PriceRepo implements TPriceRepo {
 	private static instance: PriceRepo | null = null;
@@ -15,14 +14,15 @@ class PriceRepo implements TPriceRepo {
 		}
 		return PriceRepo.instance;
 	}
-	public async getAll(): Promise<Price[]> {
-		return await prisma.price.findMany({ where: { active: true } });
+	public async getAll(userId: string): Promise<Price[]> {
+		return await prisma.price.findMany({ where: { active: true, userId } });
 	}
-	public async create(body: Partial<Price>) {
+	public async create(body: Omit<Price, "id" | "active">) {
 		await prisma.price.create({
 			data: {
-				value: body.value as number,
-				subcategoryId: body.subcategoryId as number,
+				value: body.value,
+				subcategoryId: body.subcategoryId,
+				userId: body.userId,
 			},
 		});
 	}

@@ -9,13 +9,13 @@ function AllBudgets() {
 	const [budgetTableData, setBudgetTableData] = useState<PBudget[]>(
 		[] as PBudget[]
 	);
-  const session = useSession()
+	const session = useSession();
 	//$ func
 	useEffect(() => {
 		loadBudgets();
 	}, []);
 	async function loadBudgets() {
-		const res: PBudget[] | null = await getBudgets(session.data?.user.);
+		const res: PBudget[] | null = await getBudgets();
 
 		if (res) setBudgetTableData(res);
 		else setBudgetTableData([]);

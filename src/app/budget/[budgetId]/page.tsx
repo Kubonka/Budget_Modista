@@ -153,6 +153,7 @@ function Budget({ params }: Props) {
 				total: currentBudget.total || 0,
 				date: getLocalDate(),
 				accepted: currentBudget.accepted || false,
+				userId: "1",
 			};
 			if (budgetId === "0") {
 				result = await createBudget(budget);

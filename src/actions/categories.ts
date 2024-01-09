@@ -1,7 +1,10 @@
 "use server";
 import CategoryRepo from "@/lib/repo/CategoryRepo";
-export async function getAllCategories(options: { active: boolean }) {
-	return await CategoryRepo.getInstance().getAll(options);
+export async function getAllCategories(
+	options: { active: boolean },
+	userId: string
+) {
+	return await CategoryRepo.getInstance().getAll(options, userId);
 }
 export async function createCategory(categoryData: Category) {
 	return await CategoryRepo.getInstance().create(categoryData);

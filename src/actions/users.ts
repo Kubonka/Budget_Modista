@@ -8,3 +8,6 @@ type TGoogleUser = {
 export async function upsertUser(user: TGoogleUser) {
 	return await UserRepo.getInstance().upsert(user);
 }
+export async function getUserByEmail(email: string) {
+	return await UserRepo.getInstance().getByEmail(email);
+}

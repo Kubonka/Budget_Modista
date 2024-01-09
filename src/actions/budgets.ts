@@ -1,8 +1,8 @@
 "use server";
 import { Budget as PBudget } from "@prisma/client";
 import BudgetRepo from "@/lib/repo/BudgetRepo";
-export async function getBudgets() {
-	return await BudgetRepo.getInstance().get();
+export async function getBudgets(userId: string) {
+	return await BudgetRepo.getInstance().getAll(userId);
 }
 export async function getBudgetById(budgetId: number) {
 	return await BudgetRepo.getInstance().getById(budgetId);

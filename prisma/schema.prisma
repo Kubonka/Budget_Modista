@@ -99,4 +99,6 @@ model User {
   subcategory   Subcategory[]
   price         Price[]
   budget        Budget[]
+
+  @@map("user")
 }

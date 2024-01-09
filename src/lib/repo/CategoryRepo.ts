@@ -7,7 +7,7 @@ type TCategoryRepo = {
 	create(body: Category): Promise<TStatusMessage>;
 	update(body: Category): Promise<TStatusMessage>;
 	delete(body: Category): Promise<TStatusMessage>;
-	getAll(options: TOptions): Promise<Category[]>;
+	getAll(options: TOptions, userId: string): Promise<Category[]>;
 };
 
 class CategoryRepo implements TCategoryRepo {
@@ -20,7 +20,11 @@ class CategoryRepo implements TCategoryRepo {
 	}
 	public async create(body: Category): Promise<TStatusMessage> {
 		const newCategory = await prisma.category.create({
-			data: { name: body.name.toLowerCase(), unitId: body.unitId },
+			data: {
+				name: body.name.toLowerCase(),
+				unitId: body.unitId,
+				userId: body.userId,
+			},
 		});
 		if (newCategory) {
 			const subcategoryRepo = SubcategoryRepo.getInstance();
@@ -29,6 +33,7 @@ class CategoryRepo implements TCategoryRepo {
 				name: "default",
 				categoryId: newCategory.id,
 				active: true,
+				userId: body.userId,
 			});
 			return { status: "SUCCESS", message: "Category created" };
 		}
@@ -37,7 +42,7 @@ class CategoryRepo implements TCategoryRepo {
 	public async update(body: Category): Promise<TStatusMessage> {
 		const categoryFound = await prisma.category.update({
 			where: { id: body.id },
-			data: { name: body.name, unitId: body.unitId, active: body.active },
+			data: { name: body.name, unitId: body.unitId },
 		});
 		if (!categoryFound)
 			return { status: "ERROR", message: "Category not found" };
@@ -52,10 +57,15 @@ class CategoryRepo implements TCategoryRepo {
 			return { status: "ERROR", message: "Category not found" };
 		return { status: "SUCCESS", message: "Category deleted" };
 	}
-	public async getAll({ active }: TOptions): Promise<Category[]> {
+	public async getAll(
+		{ active }: TOptions,
+		userId: string
+	): Promise<Category[]> {
 		if (active)
-			return await prisma.category.findMany({ where: { active: true } });
-		return await prisma.category.findMany();
+			return await prisma.category.findMany({
+				where: { active: true, userId },
+			});
+		return await prisma.category.findMany({ where: { userId } });
 	}
 }
 export default CategoryRepo;
