@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, useParams, usePathname } from "next/navigation";
-import { Menu as MenuIcon } from "lucide-react";
+import { Menu as MenuIcon, LogOut } from "lucide-react";
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,6 +11,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
+import { signOut } from "next-auth/react";
 
 export default function Menu() {
 	const router = useRouter();
@@ -46,7 +48,7 @@ export default function Menu() {
 				</DropdownMenuItem>
 				<DropdownMenuItem
 					className="ml-2 text-[16px] font-semibold"
-					onClick={() => router.push("/")}
+					onClick={() => router.push("/all-budgets")}
 				>
 					Ver todos
 				</DropdownMenuItem>
@@ -71,6 +73,23 @@ export default function Menu() {
 					onClick={() => router.push("/manage-prices")}
 				>
 					Precios
+				</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuLabel className="text-[16px] font-bold">
+					USUARIO
+				</DropdownMenuLabel>
+				<DropdownMenuItem
+					className="ml-2 text-[16px] font-semibold"
+					onClick={() => router.push("/settings")}
+				>
+					Ajustes
+				</DropdownMenuItem>
+				<DropdownMenuItem
+					className="ml-2 text-[16px] font-semibold flex flex-row gap-4 justify-between"
+					onClick={() => signOut()}
+				>
+					<p>Logout</p>
+					<LogOut size={20} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

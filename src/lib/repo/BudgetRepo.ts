@@ -1,13 +1,13 @@
 import prisma from "../db/db";
 import { Item, Budget as PBudget } from "@prisma/client";
 import ItemRepo from "./ItemRepo";
+import UserRepo from "./UserRepo";
 type TBudgetRepo = {
 	create(body: PBudget): Promise<TStatusMessage>;
 	update(body: PBudget): Promise<TStatusMessage>;
 	getById(budgetId: number): Promise<Budget | null>;
-	get(): Promise<PBudget[] | null>;
+	getAll(email: string): Promise<PBudget[] | null>;
 	delete(budgetId: number): Promise<TStatusMessage>;
-	//init(budgets: TBudget[]): Promise<void>;
 };
 class BudgetRepo implements TBudgetRepo {
 	private static instance: BudgetRepo | null = null;
@@ -20,10 +20,13 @@ class BudgetRepo implements TBudgetRepo {
 		}
 		return BudgetRepo.instance;
 	}
-	public async get(): Promise<PBudget[] | null> {
+	public async getAll(): Promise<PBudget[] | null> {
+		const userId = await UserRepo.getInstance().getUserIdFromSession();
+		console.log(userId);
+		if (!userId) throw new Error("failed to budgets");
 		try {
 			return await prisma.budget.findMany({
-				where: { active: true },
+				where: { active: true, userId },
 				orderBy: { id: "desc" },
 			});
 		} catch (error) {
@@ -32,8 +35,10 @@ class BudgetRepo implements TBudgetRepo {
 	}
 	public async getById(budgetId: number): Promise<Budget | null> {
 		try {
+			const userId = await UserRepo.getInstance().getUserIdFromSession();
+			if (!userId) return null;
 			const res = await prisma.budget.findUnique({
-				where: { id: budgetId },
+				where: { id: budgetId, userId },
 				include: { items: true },
 			});
 			return res;
@@ -42,13 +47,17 @@ class BudgetRepo implements TBudgetRepo {
 		}
 	}
 	public async create(body: PBudget): Promise<TStatusMessage> {
-		//Partial<Budget> & { items: Omit<Item, "id">[] }) {
+		console.log(body);
+		const userId = await UserRepo.getInstance().getUserIdFromSession();
+		if (!userId) return { status: "ERROR", message: "session not found" };
+		console.log(userId);
 		const newBudget = await prisma.budget.create({
 			data: {
 				date: body.date as string,
 				to: body.to as string,
 				total: body.total as number,
 				accepted: body.accepted as boolean,
+				userId: userId,
 			},
 		});
 		return { status: "SUCCESS", message: `${newBudget.id}` };

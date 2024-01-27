@@ -7,20 +7,24 @@ type Unit = {
 type Category = {
 	id: number;
 	name: string;
+	custom: boolean;
 	active: boolean;
 	unitId: number;
+	userId: string;
 };
 type Subcategory = {
 	id: number;
 	name: string;
 	active: boolean;
 	categoryId: number;
+	userId: string;
 };
 type Price = {
 	id: number;
 	value: number;
 	active: boolean;
 	subcategoryId: number;
+	userId: string;
 };
 type PBudget = {
 	id: number;
@@ -29,6 +33,7 @@ type PBudget = {
 	total: number;
 	accepted: boolean;
 	active: boolean;
+	userId: string;
 };
 type Budget = {
 	id: number;
@@ -38,6 +43,7 @@ type Budget = {
 	accepted: boolean;
 	active: boolean;
 	items: Item[];
+	userId: string;
 };
 type Item = {
 	id: number;
@@ -46,6 +52,18 @@ type Item = {
 	description: string;
 	subcategoryId: number;
 	budgetId: number;
+};
+type User = {
+	id: string;
+	name: string | null;
+	email: string | null;
+	image: string | null;
+	b_name: string | null;
+	b_location: string | null;
+	b_adress: string | null;
+	b_phone: string | null;
+	b_email: string | null;
+	b_logo: string | null;
 };
 
 type TItemData = {

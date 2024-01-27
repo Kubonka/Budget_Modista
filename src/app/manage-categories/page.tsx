@@ -30,12 +30,15 @@ import {
 } from "@/actions/categories";
 import { capitalize } from "@/lib/utils";
 import CategoryDialogDelete from "./CategoryDialogDelete";
+import { useSession } from "next-auth/react";
 
 export default function ManageCategories() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState<Category | null>(
 		null
 	);
+	const { data } = useSession();
+
 	//$ func
 	async function loadAllCategories() {
 		const res = await getAllCategories({ active: true });
@@ -52,9 +55,7 @@ export default function ManageCategories() {
 			let result: TStatusMessage;
 			if (!categoryData.id) {
 				result = await createCategory(categoryData);
-				console.log("result", result);
 				if (result.status && result.status === "SUCCESS") {
-					console.log("TOAST");
 					toast({ description: "Categoría creada con éxito!", duration: 3000 });
 				} else {
 					toast({
@@ -119,7 +120,14 @@ export default function ManageCategories() {
 										<p className="pt-2 font-bold">CATEGORIA</p>
 										<CategoryDialogCreate
 											create={true}
-											data={{ name: "", id: 0, unitId: 0, active: true }}
+											data={{
+												name: "",
+												unitId: 0,
+												custom: false,
+												id: 0,
+												userId: "",
+												active: true,
+											}}
 											onSubmit={handleSubmit}
 										/>
 									</div>
@@ -129,7 +137,7 @@ export default function ManageCategories() {
 						<TableBody>
 							{categories.map(
 								(category: Category) =>
-									category.id !== 1 && (
+									!category.custom && (
 										<TableRow key={category.id}>
 											<TableCell className="flex flex-row items-center justify-between font-medium">
 												<div className="w-full ">
@@ -139,10 +147,8 @@ export default function ManageCategories() {
 													<CategoryDialogCreate
 														create={false}
 														data={{
-															name: category.name,
-															id: category.id,
+															...category,
 															unitId: 0,
-															active: true,
 														}}
 														onSubmit={handleSubmit}
 													/>

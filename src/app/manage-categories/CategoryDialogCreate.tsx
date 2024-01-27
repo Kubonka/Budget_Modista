@@ -35,12 +35,17 @@ function CategoryDialogCreate({ create, data, onSubmit }: CategoryDialogProps) {
 	const [units, setUnits] = useState<Unit[]>([] as Unit[]);
 	const [open, setOpen] = useState(false);
 	const [error, setError] = useState(false);
-	const [categoryData, setCategoryData] = useState<Category>({
-		name: data.name,
-		active: true,
-		id: data.id,
-		unitId: data.unitId,
-	});
+	const [categoryData, setCategoryData] = useState<Category>({} as Category);
+	/*data
+			? {
+					name: data.name,
+					active: true,
+					id: data.id,
+					unitId: data.unitId,
+					userId: data.userId,
+			  }
+			: { name: "", unitId: 0, id: 0, userId: "", active: true }
+      */
 	function validateForm() {
 		console.log(categoryData);
 		if (categoryData.unitId === 0 || categoryData.name === "") {
@@ -72,8 +77,10 @@ function CategoryDialogCreate({ create, data, onSubmit }: CategoryDialogProps) {
 						onClick={() => {
 							setCategoryData({
 								name: "",
-								id: 0,
 								unitId: 0,
+								id: 0,
+								userId: "",
+								custom: false,
 								active: true,
 							});
 							setOpen(true);
@@ -87,10 +94,12 @@ function CategoryDialogCreate({ create, data, onSubmit }: CategoryDialogProps) {
 						variant={"outline"}
 						onClick={() => {
 							setCategoryData({
-								name: categoryData.name,
-								id: categoryData.id,
-								unitId: 0,
+								name: data.name,
 								active: true,
+								id: data.id,
+								custom: false,
+								unitId: data.unitId,
+								userId: data.userId,
 							});
 							setOpen(true);
 						}}

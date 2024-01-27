@@ -12,12 +12,14 @@ import { getAllSubcategories } from "@/actions/subcategories";
 import { getAllUnits } from "@/actions/units";
 import { getAllPrices, updatePrice } from "@/actions/prices";
 import PricesSkeleton from "@/components/skeletons/PricesSkeleton";
+import { useSession } from "next-auth/react";
 function ManagePrices() {
 	const [loading, setLoading] = useState(false);
 	const [units, setUnits] = useState<Unit[]>();
 	const [prices, setPrices] = useState<Price[]>();
 	const [categories, setCategories] = useState<Category[]>();
 	const [allSubcategories, setAllSubcategories] = useState<Subcategory[]>();
+	const { data } = useSession();
 	//$ func
 	async function loadAll() {
 		setLoading(true);
@@ -72,7 +74,7 @@ function ManagePrices() {
 					<Separator className="h-[2px] bg-title" />
 					{categories?.map(
 						(category: Category) =>
-							category.id != 1 && (
+							category.name != "personalizada" && (
 								<ul className="mt-2 flex-col " key={category.id}>
 									<Label className=" text-[16px] text-primary">
 										{`${category.name.toUpperCase()} (${
@@ -107,34 +109,6 @@ function ManagePrices() {
 														</TableRow>
 													);
 												})}
-
-											{/* {prices?.filter(
-													(price: Price) =>
-														category.name === price.category.name
-												)
-												.map((el: Price) => {
-													return (
-														<TableRow key={el.id}>
-															<TableCell className="flex flex-row items-center justify-between p-2 font-medium">
-																<p className="text-[14px] font-semibold text-title-strong">
-																	{`${capitalize(el.subcategory.name)} `}
-																</p>
-																<div className="flex items-center gap-4">
-																	<p className="text-right  text-[16px] font-semibold text-title-strong">
-																		{"$ " + el.value}
-																	</p>
-																	<PriceDialogCreate
-																		data={{
-																			id: el.id,
-																			value: el.value,
-																		}}
-																		onSubmit={handleSubmit}
-																	/>
-																</div>
-															</TableCell>
-														</TableRow>
-													);
-												})} */}
 										</TableBody>
 									</Table>
 								</ul>

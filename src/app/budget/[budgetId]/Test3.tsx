@@ -3,9 +3,10 @@ import React, { CSSProperties } from "react";
 import { v4 as uuidv4 } from "uuid";
 type Props = {
 	body: TBudgetData;
+	userData: User;
 };
 
-function Test3({ body }: Props) {
+function Test3({ body, userData }: Props) {
 	const table: CSSProperties = {
 		borderCollapse: "collapse",
 		width: "100%",
@@ -117,10 +118,10 @@ function Test3({ body }: Props) {
 							}}
 						>
 							<p style={{ ...pData, fontSize: "14px" }}>
-								LA MODISTA DE LOS PASTELES
+								{userData.b_name?.toUpperCase()}
 							</p>
-							<p style={pData}>ALEJANDRO KORN 1431</p>
-							<p style={pData}>MAR DEL PLATA</p>
+							<p style={pData}>{userData.b_adress}</p>
+							<p style={pData}>{userData.b_location}</p>
 							<div
 								style={{
 									display: "flex",
@@ -160,7 +161,7 @@ function Test3({ body }: Props) {
 										clipRule="evenodd"
 									></path>
 								</svg>
-								<p style={pData}>223 4228155</p>
+								<p style={pData}>{userData.b_phone}</p>
 							</div>
 							<div
 								style={{
@@ -270,7 +271,7 @@ function Test3({ body }: Props) {
 										d="M42.485,8h-0.3L24,21.172L5.815,8h-0.3C4.126,8,3,9.126,3,10.515v0.278	c0,0.914,0.438,1.772,1.178,2.308L24,27.459l19.822-14.358C44.562,12.565,45,11.707,45,10.793v-0.278C45,9.126,43.874,8,42.485,8z"
 									></path>
 								</svg>
-								<p style={pData}>lamodistadelospasteles@gmail.com</p>
+								<p style={pData}>{userData.b_email}</p>
 							</div>
 						</div>
 						<p
@@ -293,7 +294,7 @@ function Test3({ body }: Props) {
 							paddingRight: "4px",
 						}}
 					>
-						<img src="/LogoModista.jpg" alt="LOGO" />
+						<img src={userData.b_logo as string} alt="LOGO" />
 					</div>
 				</div>
 				<div>
@@ -328,7 +329,11 @@ function Test3({ body }: Props) {
 												<p>{item.description?.toUpperCase()}</p>
 											) : (
 												<>
-													<p>{`${item.category?.toUpperCase()} ${item.subcategory?.toUpperCase()}`}</p>
+													<p>{`${item.category?.toUpperCase()} ${
+														item.subcategory !== "default"
+															? item.subcategory?.toUpperCase()
+															: ""
+													}`}</p>
 													<p style={{ fontSize: "8px" }}>{`${
 														item.count
 													} ${item.unit?.toUpperCase()}`}</p>

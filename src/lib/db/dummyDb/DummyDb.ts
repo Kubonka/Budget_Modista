@@ -20,9 +20,9 @@ class DummyDb {
 	}
 	public async initBaseTables() {
 		await this.initUnits(units);
-		await this.initCategories(categories);
-		await this.initSubcategories(subcategories);
-		await this.initBudgets();
+		//await this.initCategories(categories);
+		//await this.initSubcategories(subcategories);
+		//await this.initBudgets();
 	}
 	private async initUnits(units: Partial<Unit>[]) {
 		for (let i = 0; i < units.length; i++) {
@@ -35,54 +35,54 @@ class DummyDb {
 			});
 		}
 	}
-	private async initCategories(categories: Partial<Category>[]) {
-		const categoryRepo = CategoryRepo.getInstance();
-		for (let i = 0; i < categories.length; i++) {
-			const category = categories[i];
-			await categoryRepo.create({
-				name: category.name as string,
-				unitId: category.unitId as number,
-				id: 0,
-				active: true,
-			});
-		}
-	}
-	private async initSubcategories(subcategories: Partial<Subcategory>[]) {
-		const subcategoryRepo = SubcategoryRepo.getInstance();
-		for (let i = 0; i < subcategories.length; i++) {
-			const subcategory = subcategories[i];
-			await subcategoryRepo.create({
-				id: 0,
-				name: subcategory.name as string,
-				categoryId: subcategory.categoryId as number,
-				active: true,
-			});
-		}
-	}
-	public async initBudgets() {
-		const maxBudgets = 35; //$ SET
-		for (let i = 1; i < maxBudgets; i++) {
-			const firstName = faker.person.firstName();
-			const lastName = faker.person.lastName();
-			const date = this.generateRandomDate();
-			const accepted = Math.random() < 0.5 ? true : false;
-			const items = await this.rndItems(
-				faker.number.int({ min: 1, max: 5 }),
-				i
-			);
-			const newBudgetBody: PBudget = {
-				to: `${firstName} ${lastName}`,
-				date: date,
-				total: this.calculateTotal(items),
-				accepted: accepted,
-				active: true,
-				id: 0,
-			};
-			await BudgetRepo.getInstance().create(newBudgetBody);
-			const itemRepo = ItemRepo.getInstance();
-			await itemRepo.create(items);
-		}
-	}
+	// private async initCategories(categories: Partial<Category>[]) {
+	// 	const categoryRepo = CategoryRepo.getInstance();
+	// 	for (let i = 0; i < categories.length; i++) {
+	// 		const category = categories[i];
+	// 		await categoryRepo.create({
+	// 			name: category.name as string,
+	// 			unitId: category.unitId as number,
+	// 			id: 0,
+	// 			active: true,
+	// 		});
+	// 	}
+	// }
+	// private async initSubcategories(subcategories: Partial<Subcategory>[]) {
+	// 	const subcategoryRepo = SubcategoryRepo.getInstance();
+	// 	for (let i = 0; i < subcategories.length; i++) {
+	// 		const subcategory = subcategories[i];
+	// 		await subcategoryRepo.create({
+	// 			id: 0,
+	// 			name: subcategory.name as string,
+	// 			categoryId: subcategory.categoryId as number,
+	// 			active: true,
+	// 		});
+	// 	}
+	// }
+	// public async initBudgets() {
+	// 	const maxBudgets = 35; //$ SET
+	// 	for (let i = 1; i < maxBudgets; i++) {
+	// 		const firstName = faker.person.firstName();
+	// 		const lastName = faker.person.lastName();
+	// 		const date = this.generateRandomDate();
+	// 		const accepted = Math.random() < 0.5 ? true : false;
+	// 		const items = await this.rndItems(
+	// 			faker.number.int({ min: 1, max: 5 }),
+	// 			i
+	// 		);
+	// 		const newBudgetBody: PBudget = {
+	// 			to: `${firstName} ${lastName}`,
+	// 			date: date,
+	// 			total: this.calculateTotal(items),
+	// 			accepted: accepted,
+	// 			active: true,
+	// 			id: 0,
+	// 		};
+	// 		await BudgetRepo.getInstance().create(newBudgetBody);
+	// 		const itemRepo = ItemRepo.getInstance();
+	// 		await itemRepo.create(items);
+	// 	}
+	// }
 	private async rndItems(
 		itemCount: number,
 		budgetId: number

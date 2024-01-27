@@ -1,5 +1,6 @@
 "use server";
 import CategoryRepo from "@/lib/repo/CategoryRepo";
+
 export async function getAllCategories(options: { active: boolean }) {
 	return await CategoryRepo.getInstance().getAll(options);
 }
