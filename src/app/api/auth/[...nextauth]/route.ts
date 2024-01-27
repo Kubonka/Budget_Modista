@@ -21,12 +21,14 @@ const handler = NextAuth({
 		async jwt({ token, account }) {
 			// const userId = await getUserByEmail(token?.email as string);
 			// token.id = userId;
+			console.log("token1", token);
+			console.log("account1", account);
 			return token;
 		},
 		async session({ session }) {
 			// const userId = await getUserByEmail(session.user.email as string);
 			// session.user.userId = userId;
-			//console.log("session", session);
+			console.log("session1", session);
 			return session;
 		},
 		async signIn({ profile }) {
