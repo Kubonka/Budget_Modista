@@ -15,7 +15,7 @@ function AllBudgets() {
 		loadBudgets();
 	}, []);
 	async function loadBudgets() {
-		const res: PBudget[] | null = await getBudgets(data?.user.userId as string);
+		const res: PBudget[] | null = await getBudgets();
 
 		if (res) setBudgetTableData(res);
 		else setBudgetTableData([]);
