@@ -12,12 +12,14 @@ import { getAllSubcategories } from "@/actions/subcategories";
 import { getAllUnits } from "@/actions/units";
 import { getAllPrices, updatePrice } from "@/actions/prices";
 import PricesSkeleton from "@/components/skeletons/PricesSkeleton";
+import { useSession } from "next-auth/react";
 function ManagePrices() {
 	const [loading, setLoading] = useState(false);
 	const [units, setUnits] = useState<Unit[]>();
 	const [prices, setPrices] = useState<Price[]>();
 	const [categories, setCategories] = useState<Category[]>();
 	const [allSubcategories, setAllSubcategories] = useState<Subcategory[]>();
+	const { data } = useSession();
 	//$ func
 	async function loadAll() {
 		setLoading(true);

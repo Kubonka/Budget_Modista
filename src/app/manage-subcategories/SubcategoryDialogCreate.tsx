@@ -29,7 +29,7 @@ function SubcategoryDialogCreate({ selecting, create, data, onSubmit }: Props) {
 		active: true,
 		id: data.id,
 		categoryId: data.categoryId,
-	});
+	} as Subcategory);
 	function validateForm() {
 		if (subcategoryData.name === "") {
 			setError(true);
@@ -58,6 +58,7 @@ function SubcategoryDialogCreate({ selecting, create, data, onSubmit }: Props) {
 								id: 0,
 								categoryId: data.categoryId,
 								active: true,
+								userId: data.userId,
 							});
 							setOpen(true);
 						}}
@@ -73,8 +74,9 @@ function SubcategoryDialogCreate({ selecting, create, data, onSubmit }: Props) {
 							setSubCategoryData({
 								name: subcategoryData.name,
 								id: subcategoryData.id,
-								categoryId: data.categoryId,
+								categoryId: subcategoryData.categoryId,
 								active: true,
+								userId: subcategoryData.userId,
 							});
 							setOpen(true);
 						}}

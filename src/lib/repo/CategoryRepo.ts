@@ -1,13 +1,12 @@
 import prisma from "../db/db";
-import type { Category } from "@prisma/client";
 import SubcategoryRepo from "./SubcategoryRepo";
-
+import UserRepo from "./UserRepo";
 type TOptions = { active: boolean };
 type TCategoryRepo = {
 	create(body: Category): Promise<TStatusMessage>;
 	update(body: Category): Promise<TStatusMessage>;
 	delete(body: Category): Promise<TStatusMessage>;
-	getAll(options: TOptions, userId: string): Promise<Category[]>;
+	getAll(options: TOptions): Promise<Category[]>;
 };
 
 class CategoryRepo implements TCategoryRepo {
@@ -19,11 +18,16 @@ class CategoryRepo implements TCategoryRepo {
 		return CategoryRepo.instance;
 	}
 	public async create(body: Category): Promise<TStatusMessage> {
+		const userId = await UserRepo.getInstance().getUserIdFromSession();
+		if (!userId && !body.custom)
+			return { status: "ERROR", message: "session not found" };
+		console.log("userId", userId);
 		const newCategory = await prisma.category.create({
 			data: {
 				name: body.name.toLowerCase(),
 				unitId: body.unitId,
-				userId: body.userId,
+				userId: userId ? userId : body.userId,
+				custom: body.custom,
 			},
 		});
 		if (newCategory) {
@@ -33,7 +37,7 @@ class CategoryRepo implements TCategoryRepo {
 				name: "default",
 				categoryId: newCategory.id,
 				active: true,
-				userId: body.userId,
+				userId: userId ? userId : body.userId,
 			});
 			return { status: "SUCCESS", message: "Category created" };
 		}
@@ -57,15 +61,18 @@ class CategoryRepo implements TCategoryRepo {
 			return { status: "ERROR", message: "Category not found" };
 		return { status: "SUCCESS", message: "Category deleted" };
 	}
-	public async getAll(
-		{ active }: TOptions,
-		userId: string
-	): Promise<Category[]> {
-		if (active)
-			return await prisma.category.findMany({
-				where: { active: true, userId },
-			});
-		return await prisma.category.findMany({ where: { userId } });
+	public async getAll({ active }: TOptions): Promise<Category[]> {
+		try {
+			const userId = await UserRepo.getInstance().getUserIdFromSession();
+			if (!userId) throw new Error("failed to get categories");
+			if (active)
+				return await prisma.category.findMany({
+					where: { active: true, userId },
+				});
+			return await prisma.category.findMany({ where: { userId } });
+		} catch (error) {
+			throw new Error("failed to get categories");
+		}
 	}
 }
 export default CategoryRepo;

@@ -25,8 +25,9 @@ model Unit {
 
 model Category {
   id          Int           @id @default(autoincrement())
-  name        String        @unique
+  name        String
   active      Boolean       @default(true)
+  custom      Boolean       @default(false)
   unit        Unit          @relation(fields: [unitId], references: [id], onDelete: Cascade)
   unitId      Int
   subcategory Subcategory[]
@@ -90,15 +91,20 @@ model Budget {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?
-  image         String?
-  category      Category[]
-  subcategory   Subcategory[]
-  price         Price[]
-  budget        Budget[]
+  id          String        @id @default(cuid())
+  name        String?
+  email       String        @unique
+  image       String?
+  b_name      String?
+  b_location  String?
+  b_adress    String?
+  b_phone     String?
+  b_email     String?
+  b_logo      String?
+  category    Category[]
+  subcategory Subcategory[]
+  price       Price[]
+  budget      Budget[]
 
   @@map("user")
 }

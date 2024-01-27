@@ -1,12 +1,13 @@
 import prisma from "../db/db";
-import type { Subcategory } from "@prisma/client";
+
 import PriceRepo from "./PriceRepo";
+import UserRepo from "./UserRepo";
 
 type TOptions = { active: boolean };
 type TSubcategoryRepo = {
 	create(body: Subcategory): Promise<TStatusMessage>;
 	update(body: Subcategory): Promise<TStatusMessage>;
-	getAll(options: TOptions, userId: string): Promise<Subcategory[]>;
+	getAll(options: TOptions): Promise<Subcategory[]>;
 	getByCategory(category: Category, options: TOptions): Promise<Subcategory[]>;
 	delete(body: Subcategory): Promise<TStatusMessage>;
 };
@@ -37,15 +38,14 @@ class SubcategoryRepo implements TSubcategoryRepo {
 		}
 		return { status: "ERROR", message: "Subcategory failed to create" };
 	}
-	public async getAll(
-		{ active }: TOptions,
-		userId: string
-	): Promise<Subcategory[]> {
+	public async getAll({ active }: TOptions): Promise<Subcategory[]> {
+		const userId = await UserRepo.getInstance().getUserIdFromSession();
+		if (!userId) return [];
 		if (active)
 			return await prisma.subcategory.findMany({
 				where: { active: true, userId },
 			});
-		return await prisma.subcategory.findMany();
+		return await prisma.subcategory.findMany({ where: { userId } });
 	}
 	public async getByCategory(
 		category: Category,

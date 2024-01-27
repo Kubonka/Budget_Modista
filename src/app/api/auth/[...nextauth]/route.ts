@@ -1,6 +1,6 @@
 //export { GET, POST } from "../../../../auth";
 
-import { getUserByEmail, upsertUser } from "@/actions/users";
+import { upsertUser } from "@/actions/users";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -19,24 +19,26 @@ const handler = NextAuth({
 	],
 	callbacks: {
 		async jwt({ token, account }) {
-			const userId = await getUserByEmail(token?.email as string);
-			token.id = userId;
+			// const userId = await getUserByEmail(token?.email as string);
+			// token.id = userId;
 			return token;
 		},
 		async session({ session }) {
-			const userId = await getUserByEmail(session.user.email as string);
-			session.user.userId = userId;
-			console.log("session", session);
+			// const userId = await getUserByEmail(session.user.email as string);
+			// session.user.userId = userId;
+			//console.log("session", session);
 			return session;
 		},
 		async signIn({ profile }) {
 			try {
+				if (!profile) return false;
 				const result = await upsertUser({
-					email: profile?.email as string,
-					name: profile?.name as string,
-					image: profile?.image as string,
+					email: profile.email as string,
+					name: profile.name as string,
+					image: profile.image as string,
 				});
-				return true;
+				if ((result.status = "SUCCESS")) return true;
+				return false;
 			} catch (error) {
 				return false;
 			}

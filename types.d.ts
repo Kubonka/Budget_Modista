@@ -7,6 +7,7 @@ type Unit = {
 type Category = {
 	id: number;
 	name: string;
+	custom: boolean;
 	active: boolean;
 	unitId: number;
 	userId: string;
@@ -51,6 +52,18 @@ type Item = {
 	description: string;
 	subcategoryId: number;
 	budgetId: number;
+};
+type User = {
+	id: string;
+	name: string | null;
+	email: string | null;
+	image: string | null;
+	b_name: string | null;
+	b_location: string | null;
+	b_adress: string | null;
+	b_phone: string | null;
+	b_email: string | null;
+	b_logo: string | null;
 };
 
 type TItemData = {

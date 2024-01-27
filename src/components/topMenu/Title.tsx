@@ -19,26 +19,24 @@ export default function Title() {
 		case "/budget/0":
 			{
 				const query = params;
-				console.log("p", params);
 				if (query.budgetId !== undefined && query.budgetId !== null) {
 					if (query.budgetId === "0") {
 						title = "NUEVO PRESUPUESTO";
 					} else {
-						title = `PRESUPUESTO Nº ${query.budgetId}`;
+						title = `PRESUPUESTO ID:${query.budgetId}`;
 					}
 				}
 			}
 			break;
-		case "/":
+		case "/all-budgets":
 			title = "PRESUPUESTOS";
 			break;
 
 		default:
 			{
-				console.log(pathname);
 				if (pathname.split("/")[1] === "budget") {
 					const query = params;
-					title = `PRESUPUESTO Nº ${query.budgetId}`;
+					title = `PRESUPUESTO ID:${query.budgetId}`;
 				}
 			}
 			break;

@@ -33,8 +33,7 @@ import {
 import { capitalize } from "@/lib/utils";
 import SubcategoryDialogCreate from "./SubcategoryDialogCreate";
 import SubcategoryDialogDelete from "./SubcategoryDialogDelete";
-
-//!import SubcategoryDialog from "../components/Dialogs/SubcategoryDialog";
+import { useSession } from "next-auth/react";
 
 export default function ManageSubcategories() {
 	const [categories, setCategories] = useState<Category[]>([]);
@@ -44,7 +43,11 @@ export default function ManageSubcategories() {
 	);
 	const [selecting, setSelecting] = useState(false);
 	const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
+	const [selectedCategory, setSelectedCategory] = useState<Category>(
+		{} as Category
+	);
 	const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory>(); //todo refact
+	const { data } = useSession();
 	//$ func
 	async function getCategoriesAndSubcategories() {
 		const cat = await getAllCategories({ active: true });
@@ -52,10 +55,7 @@ export default function ManageSubcategories() {
 		setCategories(cat);
 		setAllSubcategories(subcat);
 	}
-	async function getSubcategories() {
-		const category = categories.find(
-			(c) => c.id === parseInt(selectedCategoryId)
-		) as Category;
+	async function getSubcategories(category: Category) {
 		const res = await getSubcategoriesByCategory(category, { active: true });
 		setsubcategoriesByCat(res);
 	}
@@ -63,7 +63,13 @@ export default function ManageSubcategories() {
 		getCategoriesAndSubcategories();
 	}, []);
 	useEffect(() => {
-		if (selectedCategoryId) getSubcategories();
+		if (selectedCategoryId) {
+			const category = categories.find(
+				(c) => c.id === parseInt(selectedCategoryId) && !c.custom
+			) as Category;
+			setSelectedCategory(category);
+			getSubcategories(category);
+		}
 	}, [selectedCategoryId]);
 
 	async function handleSubmit(subcategoryData: Subcategory) {
@@ -98,7 +104,7 @@ export default function ManageSubcategories() {
 					});
 				}
 			}
-			getSubcategories();
+			getSubcategories(selectedCategory);
 		} catch (error) {
 			console.log(error);
 		}
@@ -118,7 +124,7 @@ export default function ManageSubcategories() {
 					duration: 3000,
 				});
 			}
-			getSubcategories();
+			getSubcategories(selectedCategory);
 		} catch (error) {
 			console.log(error);
 		}
@@ -147,7 +153,7 @@ export default function ManageSubcategories() {
 							<SelectGroup>
 								{categories.map(
 									(category: Category) =>
-										category.id !== 1 && (
+										!category.custom && (
 											<SelectItem
 												key={category.id}
 												value={category.id.toString()}
@@ -173,8 +179,9 @@ export default function ManageSubcategories() {
 											data={{
 												name: "",
 												id: 0,
-												categoryId: parseInt(selectedCategoryId),
+												categoryId: selectedCategory.id,
 												active: true,
+												userId: selectedCategory.userId,
 											}}
 											onSubmit={handleSubmit}
 										/>
@@ -185,7 +192,6 @@ export default function ManageSubcategories() {
 						<TableBody>
 							{subcategoriesByCat.map(
 								(subcategory: Subcategory) =>
-									subcategory.id !== 1 &&
 									subcategory.active && (
 										<TableRow key={subcategory.id}>
 											<TableCell className="flex flex-row items-center justify-between font-medium px-0">
@@ -201,6 +207,7 @@ export default function ManageSubcategories() {
 															id: subcategory.id,
 															categoryId: subcategory.categoryId,
 															active: true,
+															userId: subcategory.userId,
 														}}
 														onSubmit={handleSubmit}
 													/>

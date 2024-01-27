@@ -14,16 +14,19 @@ export async function middleware(req: NextRequest) {
 	const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 	const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 	//? begin
-	console.log("session", session);
-	console.log("isApiAuthRoute", isApiAuthRoute);
-	console.log("isAuthRoute", isAuthRoute);
-	console.log("isPublicRoute", isPublicRoute);
+	//console.log("session", session);
+	//console.log("isApiAuthRoute", isApiAuthRoute);
+	//console.log("isAuthRoute", isAuthRoute);
+	//console.log("isPublicRoute", isPublicRoute);
 	if (isApiAuthRoute) return NextResponse.next();
 	if (isAuthRoute) {
 		if (session) {
 			return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
 		}
 		return NextResponse.next();
+	}
+	if (session && isPublicRoute) {
+		return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
 	}
 	if (!session && !isPublicRoute) {
 		const requestedPage = req.nextUrl.pathname;

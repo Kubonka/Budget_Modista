@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,8 @@ import ImageGen from "./ImageGen";
 import { createItem } from "@/actions/items";
 import { getLocalDate } from "@/lib/utils";
 import BudgetSkeleton from "@/components/skeletons/BudgetSkeleton";
+import { useSession } from "next-auth/react";
+import { getUser } from "@/actions/users";
 
 type Props = {
 	params: { budgetId: string };
@@ -26,6 +28,7 @@ type Props = {
 function Budget({ params }: Props) {
 	const { budgetId } = params;
 	const router = useRouter();
+	const [user, setUser] = useState<User>({} as User);
 	const [idle, setIdle] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [categories, setCategories] = useState<Category[]>([] as Category[]);
@@ -40,6 +43,7 @@ function Budget({ params }: Props) {
 		date: getLocalDate(),
 	} as TBudgetData);
 	const [acceptedStatus, setAcceptedStatus] = useState(false);
+
 	//$ func
 	useEffect(() => {
 		setLoading(true);
@@ -75,10 +79,12 @@ function Budget({ params }: Props) {
 		const responseUnits = await getAllUnits();
 		const responseSubcategories = await getAllSubcategories({ active: false });
 		const responsePrices = await getAllPrices();
+		const responseUser = (await getUser()) as User;
 		setCategories([...responseCategories]);
 		setUnits(responseUnits);
 		setAllSubcategories(responseSubcategories);
 		setPrices(responsePrices);
+		setUser(responseUser);
 	}
 	async function loadBudget() {
 		const responseBudget = await getBudgetById(parseInt(budgetId));
@@ -153,7 +159,7 @@ function Budget({ params }: Props) {
 				total: currentBudget.total || 0,
 				date: getLocalDate(),
 				accepted: currentBudget.accepted || false,
-				userId: "1",
+				userId: "",
 			};
 			if (budgetId === "0") {
 				result = await createBudget(budget);
@@ -257,6 +263,7 @@ function Budget({ params }: Props) {
 					onGenerationSuccess={handleGenerationSuccess}
 					getBody={setUpTargetBody}
 					idle={idle}
+					userData={user}
 				/>
 			</CardFooter>
 		</Card>
@@ -264,4 +271,3 @@ function Budget({ params }: Props) {
 }
 
 export default Budget;
-//s

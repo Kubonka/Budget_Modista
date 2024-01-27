@@ -38,13 +38,10 @@ export default function ManageCategories() {
 		null
 	);
 	const { data } = useSession();
-	console.log("session", data);
+
 	//$ func
 	async function loadAllCategories() {
-		const res = await getAllCategories(
-			{ active: true },
-			data?.user.userId as string
-		);
+		const res = await getAllCategories({ active: true });
 		setCategories(res);
 	}
 	useEffect(() => {
@@ -58,9 +55,7 @@ export default function ManageCategories() {
 			let result: TStatusMessage;
 			if (!categoryData.id) {
 				result = await createCategory(categoryData);
-				console.log("result", result);
 				if (result.status && result.status === "SUCCESS") {
-					console.log("TOAST");
 					toast({ description: "Categoría creada con éxito!", duration: 3000 });
 				} else {
 					toast({
@@ -127,10 +122,11 @@ export default function ManageCategories() {
 											create={true}
 											data={{
 												name: "",
-												id: 0,
 												unitId: 0,
+												custom: false,
+												id: 0,
+												userId: "",
 												active: true,
-												userId: data?.user.userId as string,
 											}}
 											onSubmit={handleSubmit}
 										/>
@@ -141,7 +137,7 @@ export default function ManageCategories() {
 						<TableBody>
 							{categories.map(
 								(category: Category) =>
-									category.id !== 1 && (
+									!category.custom && (
 										<TableRow key={category.id}>
 											<TableCell className="flex flex-row items-center justify-between font-medium">
 												<div className="w-full ">
@@ -151,11 +147,8 @@ export default function ManageCategories() {
 													<CategoryDialogCreate
 														create={false}
 														data={{
-															name: category.name,
-															id: category.id,
+															...category,
 															unitId: 0,
-															active: true,
-															userId: data?.user.userId as string,
 														}}
 														onSubmit={handleSubmit}
 													/>
