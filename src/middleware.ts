@@ -8,7 +8,11 @@ import {
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-	const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+	const session = await getToken({
+		req,
+		secret: process.env.NEXTAUTH_SECRET,
+		raw: true,
+	});
 	const { nextUrl } = req;
 	const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 	const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
