@@ -21,7 +21,8 @@ function ImageGen({ onGenerationSuccess, getBody, idle, userData }: Props) {
 		console.log(body);
 		await root.render(<Test3 key={uuidv4()} body={body} userData={userData} />);
 		setTimeout(() => {
-			console.log(body);
+			console.log("body", body);
+			console.log("user", userData);
 			toPng(markupRef.current, { cacheBust: false })
 				.then((dataUrl: any) => {
 					const link = document.createElement("a");
@@ -36,7 +37,7 @@ function ImageGen({ onGenerationSuccess, getBody, idle, userData }: Props) {
 					}, 2500);
 				})
 				.catch((err) => {
-					console.log(err);
+					console.log("err", err);
 					onGenerationSuccess(false);
 					root.unmount();
 				});
