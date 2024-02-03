@@ -10,6 +10,7 @@ type TSubcategoryRepo = {
 	getAll(options: TOptions): Promise<Subcategory[]>;
 	getByCategory(category: Category, options: TOptions): Promise<Subcategory[]>;
 	delete(body: Subcategory): Promise<TStatusMessage>;
+	getAllWithCat(): Promise<Subcategory[]>;
 };
 class SubcategoryRepo implements TSubcategoryRepo {
 	private static instance: SubcategoryRepo | null = null;
@@ -93,6 +94,21 @@ class SubcategoryRepo implements TSubcategoryRepo {
 			return { status: "SUCCESS", message: "Subcategory deleted" };
 		} catch (error) {
 			return { status: "ERROR", message: "Failed to delete Subcategory" };
+		}
+	}
+	public async getAllWithCat(): Promise<
+		(Subcategory & { category: Category })[]
+	> {
+		try {
+			const userId = await UserRepo.getInstance().getUserIdFromSession();
+			if (!userId) throw new Error("failed to get categories");
+			const a = await prisma.subcategory.findMany({
+				where: { userId, active: true },
+				include: { category: true },
+			});
+			return a;
+		} catch (error) {
+			throw new Error("failed to get categories");
 		}
 	}
 }

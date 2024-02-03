@@ -74,16 +74,24 @@ export default function Menu() {
 				>
 					Precios
 				</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<DropdownMenuLabel className="text-[16px] font-bold">
-					USUARIO
-				</DropdownMenuLabel>
 				<DropdownMenuItem
 					className="ml-2 text-[16px] font-semibold"
 					onClick={() => router.push("/settings")}
 				>
-					Ajustes
+					Imagen de salida
 				</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuLabel className="text-[16px] font-bold">
+					ESTADISTICAS
+				</DropdownMenuLabel>
+				<DropdownMenuItem
+					className="ml-2 text-[16px] font-semibold"
+					onClick={() => router.push("/statistics")}
+				>
+					Estadisticas
+				</DropdownMenuItem>
+				<DropdownMenuSeparator />
+
 				<DropdownMenuItem
 					className="ml-2 text-[16px] font-semibold flex flex-row gap-4 justify-between"
 					onClick={() => signOut()}

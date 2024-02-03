@@ -1,4 +1,9 @@
 type TStatusMessage = { status: "SUCCESS" | "ERROR"; message: string };
+type TObjectDate = {
+	year: number;
+	month: number;
+	day: number;
+};
 type Unit = {
 	id: number;
 	singular: string;
@@ -77,6 +82,20 @@ type TItemData = {
 	unit: string;
 };
 type TBudgetData = Omit<Budget, "items"> & { items: TItemData[] };
+type MonthRevenue = {
+	year: number;
+	month: number;
+	monthProfit: MonthProfit;
+};
+type MonthProfit = {
+	totalProfit: number;
+	budgetsCount: number;
+	subcategories: SubcategoryProfit[];
+};
+type SubcategoryProfit = {
+	name: string;
+	profit: number;
+};
 //! OLD
 // type TStatusMessage = { status: "SUCCESS" | "ERROR"; message: string };
 // type TActionResponse = "pending" | "fulfilled" | "rejected";

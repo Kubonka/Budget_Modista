@@ -18,15 +18,30 @@ export function parseDate(isoString: string): string {
 	// 	.map((part) => part.padStart(2, "0"));
 	// return `${day}/${month}/${year}`;
 	//1/3/2024, 10:39:54 PM
+	console.log(isoString);
 	const [datePart] = isoString.split(",");
-	const [month, day, year] = datePart
-		.split("/")
-		.map((part) => part.padStart(2, "0"));
-	return `${day}/${month}/${year}`;
+	const objDate = toStringObjectDate(datePart);
+	return `${objDate.day}/${objDate.month}/${objDate.year}`;
 }
 export function getLocalDate() {
 	const date = new Date().toLocaleString("en-US", {
 		timeZone: "America/Argentina/Buenos_Aires",
 	});
 	return parseDate(date);
+}
+export function getObjectDate(date: string): TObjectDate {
+	//25/12/2023 <- date
+	const objDate = toStringObjectDate(date);
+	return {
+		year: parseInt(objDate.year),
+		month: parseInt(objDate.month),
+		day: parseInt(objDate.day),
+	};
+}
+function toStringObjectDate(date: string) {
+	console.log(date);
+	const [day, month, year] = date
+		.split("/")
+		.map((part) => part.padStart(2, "0"));
+	return { year, month, day };
 }
