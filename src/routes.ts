@@ -1,6 +1,6 @@
 type TRoute = string[];
 //$public routes
-export const publicRoutes: TRoute = ["/developer"];
+export const publicRoutes: TRoute = ["/developer", "/"];
 //$auth routes
 export const authRoutes: TRoute = ["/auth/login"];
 //$authentication purposes routes
