@@ -126,14 +126,14 @@ export default function StatisticsPage() {
 						<Tooltip content={<CustomizedTooltipPie pieData={pieData} />} />
 						<Bar dataKey={"total"} fill="#e11d48" opacity={0.5} />
 					</BarChart>
-					<ul className="flex flex-col justify-start items-start w-full pl-4">
+					{/* <ul className="flex flex-col justify-start items-start w-full pl-4">
 						{pieData.map((s, i) => (
 							<li
 								key={i}
 								className="text-sm font-semibold"
 							>{`${s.id} - ${s.name}`}</li>
 						))}
-					</ul>
+					</ul> */}
 				</CardContent>
 			</Card>
 			<Card className=" m-2 pt-2 px-2">
