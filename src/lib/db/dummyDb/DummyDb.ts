@@ -60,7 +60,7 @@ class DummyDb {
 	// 	}
 	// }
 	public async initBudgets() {
-		const maxBudgets = 300; //$ SET
+		const maxBudgets = 150; //$ SET
 		for (let i = 1; i < maxBudgets; i++) {
 			const firstName = faker.person.firstName();
 			const lastName = faker.person.lastName();
