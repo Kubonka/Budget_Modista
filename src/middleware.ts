@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
 		return NextResponse.next();
 	}
 	if (session && isPublicRoute) {
-		return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+		//return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
 	}
 	if (!session && !isPublicRoute) {
 		const requestedPage = req.nextUrl.pathname;
