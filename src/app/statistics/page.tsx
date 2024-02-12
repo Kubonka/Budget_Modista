@@ -218,7 +218,7 @@ const CustomizedTooltipArea: React.FC<CustomizedTooltipProps> = ({
 		return (
 			<div className="custom-tooltip">
 				<div>
-					{payload.map((pld, index) => (
+					{payload.map((pld: any, index: number) => (
 						<div
 							key={index}
 							className="bg-slate-100/[.5] flex flex-col justify-center items-center p-2 rounded-sm border-[1px] border-black"
@@ -242,7 +242,7 @@ const CustomizedTooltipPie: React.FC<CustomizedTooltipProps> = ({
 		return (
 			<div className="custom-tooltip">
 				<div>
-					{payload.map((pld, index) => (
+					{payload.map((pld: any, index: number) => (
 						<div
 							key={index}
 							className="bg-slate-100/[.5] flex flex-col justify-center items-center p-2 rounded-sm border-[1px] border-black"
