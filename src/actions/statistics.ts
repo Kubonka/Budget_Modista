@@ -28,11 +28,11 @@ export async function getStatistics(): Promise<MonthRevenue[]> {
 	});
 	// 3 - mapear a MonthRevenue
 	// 3.1 - agrupar por meses
-	const groupedMonths = allBudgets.reduce<Budget[][]>((acc, curr) => {
+	let groupedMonths = allBudgets.reduce<Budget[][]>((acc, curr) => {
 		if (acc.length) {
 		}
 		const lastGroup: Budget[] = acc[acc.length - 1];
-		console.log("lastGroup", lastGroup);
+
 		if (lastGroup && lastGroup.length) {
 			const lastDate = getObjectDate(lastGroup[0].date);
 			const currDate = getObjectDate(curr.date);
@@ -49,7 +49,8 @@ export async function getStatistics(): Promise<MonthRevenue[]> {
 		}
 		return acc;
 	}, []);
-
+	groupedMonths = groupedMonths.slice(groupedMonths.length - 12);
+	console.log(groupedMonths.length);
 	// 3.2 - calcular y generar output
 	const result: MonthRevenue[] = [];
 	for (let i = 0; i < groupedMonths.length; i++) {

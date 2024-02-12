@@ -64,7 +64,7 @@ class BudgetRepo implements TBudgetRepo {
 		return { status: "SUCCESS", message: `${newBudget.id}` };
 	}
 	public async update(body: PBudget): Promise<TStatusMessage> {
-		console.log("fecha", body.date);
+		//console.log("fecha", body.date);
 		const newBudget = await prisma.budget.update({
 			where: { id: body.id },
 			data: {

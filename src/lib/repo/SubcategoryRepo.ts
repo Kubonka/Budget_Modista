@@ -103,7 +103,13 @@ class SubcategoryRepo implements TSubcategoryRepo {
 			const userId = await UserRepo.getInstance().getUserIdFromSession();
 			if (!userId) throw new Error("failed to get categories");
 			const a = await prisma.subcategory.findMany({
-				where: { userId, active: true },
+				where: {
+					userId,
+					active: true,
+					category: {
+						NOT: { name: "personalizada" },
+					},
+				},
 				include: { category: true },
 			});
 			return a;

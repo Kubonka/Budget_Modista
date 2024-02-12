@@ -31,7 +31,9 @@ export default function Title() {
 		case "/all-budgets":
 			title = "PRESUPUESTOS";
 			break;
-
+		case "/statistics":
+			title = "ESTADISTICAS";
+			break;
 		default:
 			{
 				if (pathname.split("/")[1] === "budget") {

@@ -24,7 +24,7 @@ export default function Menu() {
 					<MenuIcon strokeWidth={2.75} size={24} />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="mt-1 w-[150px]">
+			<DropdownMenuContent className="mt-1 w-[170px]">
 				<DropdownMenuLabel className="text-[16px] font-bold">
 					PRESUPUESTO
 				</DropdownMenuLabel>
@@ -52,7 +52,7 @@ export default function Menu() {
 				>
 					Ver todos
 				</DropdownMenuItem>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator className="h-[2px]" />
 				<DropdownMenuLabel className="text-[16px] font-bold">
 					ADMINISTRAR
 				</DropdownMenuLabel>
@@ -80,7 +80,7 @@ export default function Menu() {
 				>
 					Imagen de salida
 				</DropdownMenuItem>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator className="h-[2px]" />
 				<DropdownMenuLabel className="text-[16px] font-bold">
 					ESTADISTICAS
 				</DropdownMenuLabel>
@@ -90,13 +90,13 @@ export default function Menu() {
 				>
 					Estadisticas
 				</DropdownMenuItem>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator className="h-[2px]" />
 
 				<DropdownMenuItem
-					className="ml-2 text-[16px] font-semibold flex flex-row gap-4 justify-between"
+					className="ml-2 text-[16px] font-semibold flex flex-row gap-4 justify-between "
 					onClick={() => signOut()}
 				>
-					<p>Logout</p>
+					<p>Cerrar sesión</p>
 					<LogOut size={20} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>

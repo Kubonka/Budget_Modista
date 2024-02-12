@@ -1,3 +1,4 @@
+import TopMenu from "@/components/topMenu/TopMenu";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -9,8 +10,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<>
-			<div className=" bg-gray-100 h-screen">{children}</div>
-		</>
+		<div className=" bg-gray-100 h-full">
+			<TopMenu className="" />
+			<div className=" bg-gray-100 h-full">{children}</div>
+		</div>
 	);
 }
