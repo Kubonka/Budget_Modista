@@ -18,11 +18,11 @@ class DummyDb {
 		// await prisma.item.deleteMany({});
 		// await prisma.budget.deleteMany({});
 	}
+
 	public async initBaseTables() {
 		await this.initUnits(units);
 		//await this.initCategories(categories);
 		//await this.initSubcategories(subcategories);
-		//await this.initBudgets();
 	}
 	private async initUnits(units: Partial<Unit>[]) {
 		for (let i = 0; i < units.length; i++) {
@@ -59,43 +59,44 @@ class DummyDb {
 	// 		});
 	// 	}
 	// }
-	// public async initBudgets() {
-	// 	const maxBudgets = 35; //$ SET
-	// 	for (let i = 1; i < maxBudgets; i++) {
-	// 		const firstName = faker.person.firstName();
-	// 		const lastName = faker.person.lastName();
-	// 		const date = this.generateRandomDate();
-	// 		const accepted = Math.random() < 0.5 ? true : false;
-	// 		const items = await this.rndItems(
-	// 			faker.number.int({ min: 1, max: 5 }),
-	// 			i
-	// 		);
-	// 		const newBudgetBody: PBudget = {
-	// 			to: `${firstName} ${lastName}`,
-	// 			date: date,
-	// 			total: this.calculateTotal(items),
-	// 			accepted: accepted,
-	// 			active: true,
-	// 			id: 0,
-	// 		};
-	// 		await BudgetRepo.getInstance().create(newBudgetBody);
-	// 		const itemRepo = ItemRepo.getInstance();
-	// 		await itemRepo.create(items);
-	// 	}
-	// }
+	public async initBudgets() {
+		const maxBudgets = 300; //$ SET
+		for (let i = 1; i < maxBudgets; i++) {
+			const firstName = faker.person.firstName();
+			const lastName = faker.person.lastName();
+			const date = this.generateRandomDate();
+			const accepted = true;
+			const items = await this.rndItems(
+				faker.number.int({ min: 1, max: 5 }),
+				i
+			);
+			const newBudgetBody: PBudget = {
+				to: `${firstName} ${lastName}`,
+				date: date,
+				total: this.calculateTotal(items),
+				accepted: accepted,
+				active: true,
+				id: 0,
+				userId: "empty",
+			};
+			await BudgetRepo.getInstance().create(newBudgetBody);
+			const itemRepo = ItemRepo.getInstance();
+			await itemRepo.create(items);
+		}
+	}
 	private async rndItems(
 		itemCount: number,
 		budgetId: number
 	): Promise<Omit<Item, "id">[]> {
-		//?count , subcategory_id = 6+ , description , price
+		//?count , subcategory_id = 8 , description , price
 		const items: Omit<Item, "id">[] = [];
 		for (let i = 0; i < itemCount; i++) {
-			const subcategoryId = faker.number.int({ min: 6, max: 13 });
+			const subcategoryId = faker.number.int({ min: 2, max: 9 });
 			const newItem: Omit<Item, "id"> = {
 				subcategoryId,
 				budgetId,
 				count: faker.number.int({ min: 1, max: 4 }),
-				price: faker.number.int({ min: 100, max: 1700 }),
+				price: faker.number.int({ min: 1000, max: 6000 }),
 				description: "",
 			};
 			items.push(newItem);
@@ -109,7 +110,7 @@ class DummyDb {
 	}
 	private generateRandomDate() {
 		const startDate = new Date("2022-01-01").getTime();
-		const endDate = new Date("2024-01-04").getTime();
+		const endDate = new Date("2024-02-05").getTime();
 		const dates = [];
 		const randomTime = Math.random() * (endDate - startDate) + startDate;
 		const date = new Date(randomTime);

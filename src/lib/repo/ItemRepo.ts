@@ -4,7 +4,7 @@ type TOptions = { active: boolean };
 type TItemRepo = {
 	create(body: Omit<Item, "id">[]): Promise<TStatusMessage>;
 	delete(body: Item): Promise<TStatusMessage>;
-	// getAll(options: TOptions): Promise<Item[]>;
+	getAll(budgetId: number): Promise<Item[]>;
 };
 
 class ItemRepo implements TItemRepo {
@@ -37,6 +37,15 @@ class ItemRepo implements TItemRepo {
 		// if (!itemFound)
 		// 	return { status: "ERROR", message: "Item not found" };
 		return { status: "SUCCESS", message: "Item deleted" };
+	}
+
+	public async getAll(budgetId: number): Promise<Item[]> {
+		try {
+			return [];
+		} catch (error) {
+			console.log(error);
+			return [];
+		}
 	}
 }
 export default ItemRepo;

@@ -6,7 +6,8 @@ type TBudgetRepo = {
 	create(body: PBudget): Promise<TStatusMessage>;
 	update(body: PBudget): Promise<TStatusMessage>;
 	getById(budgetId: number): Promise<Budget | null>;
-	getAll(email: string): Promise<PBudget[] | null>;
+	getAll(): Promise<PBudget[] | null>;
+	getAllWithItems(): Promise<Budget[] | null>;
 	delete(budgetId: number): Promise<TStatusMessage>;
 };
 class BudgetRepo implements TBudgetRepo {
@@ -63,6 +64,7 @@ class BudgetRepo implements TBudgetRepo {
 		return { status: "SUCCESS", message: `${newBudget.id}` };
 	}
 	public async update(body: PBudget): Promise<TStatusMessage> {
+		//console.log("fecha", body.date);
 		const newBudget = await prisma.budget.update({
 			where: { id: body.id },
 			data: {
@@ -83,6 +85,18 @@ class BudgetRepo implements TBudgetRepo {
 			return { status: "SUCCESS", message: "Budget deleted" };
 		} catch (error) {
 			return { status: "ERROR", message: "Failed to delete budget" };
+		}
+	}
+	public async getAllWithItems(): Promise<Budget[] | null> {
+		try {
+			const userId = await UserRepo.getInstance().getUserIdFromSession();
+			if (!userId) throw new Error("failed to get budgets");
+			return await prisma.budget.findMany({
+				where: { active: true, accepted: true, userId },
+				include: { items: true },
+			});
+		} catch (error) {
+			return null;
 		}
 	}
 }
