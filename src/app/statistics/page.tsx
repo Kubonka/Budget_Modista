@@ -218,8 +218,11 @@ const CustomizedTooltipArea: React.FC<CustomizedTooltipProps> = ({
 		return (
 			<div className="custom-tooltip">
 				<div>
-					{payload.map((pld) => (
-						<div className="bg-slate-100/[.5] flex flex-col justify-center items-center p-2 rounded-sm border-[1px] border-black">
+					{payload.map((pld, index) => (
+						<div
+							key={index}
+							className="bg-slate-100/[.5] flex flex-col justify-center items-center p-2 rounded-sm border-[1px] border-black"
+						>
 							<div>{pld.dataKey.toUpperCase()}</div>
 							<div>{`$ ${pld.value}`}</div>
 						</div>
@@ -239,8 +242,11 @@ const CustomizedTooltipPie: React.FC<CustomizedTooltipProps> = ({
 		return (
 			<div className="custom-tooltip">
 				<div>
-					{payload.map((pld) => (
-						<div className="bg-slate-100/[.5] flex flex-col justify-center items-center p-2 rounded-sm border-[1px] border-black">
+					{payload.map((pld, index) => (
+						<div
+							key={index}
+							className="bg-slate-100/[.5] flex flex-col justify-center items-center p-2 rounded-sm border-[1px] border-black"
+						>
 							<div className="text-sm">{pieData[label].name}</div>
 							<div>{`$ ${pld.value}`}</div>
 						</div>
